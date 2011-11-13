@@ -4,18 +4,7 @@ import com.noodlesandwich.workshops.functional.FunctionalList;
 import com.noodlesandwich.workshops.functional.Predicate;
 
 public class Ranks {
-    public static String rank(final FunctionalList<Card> hand) {
-        return rank(hand, RANKS);
-    }
-
-    public static String rank(final FunctionalList<Card> hand, final FunctionalList<Rank> ranks) {
-        final Rank currentRank = ranks.head();
-        return currentRank.matches(hand)
-                   ? currentRank.name()
-                   : rank(hand, ranks.tail());
-    }
-
-    private static final class Rank {
+    public static final class Rank {
         private final String name;
         private final Predicate<FunctionalList<Card>> criteria;
 
@@ -75,5 +64,5 @@ public class Ranks {
         }
     });
 
-    private static final FunctionalList<Rank> RANKS = FunctionalList.of(twoPair, pair, highCard);
+    public static final FunctionalList<Rank> RANKS = FunctionalList.of(twoPair, pair, highCard);
 }
