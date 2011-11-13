@@ -15,6 +15,11 @@ public final class TexasHoldEmTest {
 
     @Test public void
     detects_a_pair() {
-        assertThat(texasHoldEm.rank("4d 8c 9s Td Th Qs Qc"), is("Pair"));
+        assertThat(texasHoldEm.rank("4d 8c 9s Td Th Qs Kc"), is("Pair"));
+    }
+
+    @Test public void
+    detects_two_pair() {
+        assertThat(texasHoldEm.rank("3s 5c 5d 8h 9h 9d Jc"), is("Two Pair"));
     }
 }

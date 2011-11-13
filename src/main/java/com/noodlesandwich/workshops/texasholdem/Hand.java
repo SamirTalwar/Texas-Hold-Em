@@ -10,14 +10,22 @@ public final class Hand {
     }
 
     public String rank() {
-        return rank(hand, "  ") ? "Pair" : "High Card";
+        return rankForPair(hand, "  ");
     }
 
-    private static boolean rank(final FunctionalList<String> hand, final String last) {
+    private static String rankForPair(final FunctionalList<String> hand, final String last) {
         return hand.isEmpty()
-                   ? false
+                   ? "High Card"
                    : last.charAt(0) == hand.head().charAt(0)
-                       ? true
-                       : rank(hand.tail(), hand.head());
+                       ? rankForTwoPair(hand.tail(), "  ")
+                       : rankForPair(hand.tail(), hand.head());
+    }
+
+    private static String rankForTwoPair(final FunctionalList<String> hand, final String last) {
+        return hand.isEmpty()
+                   ? "Pair"
+                   : last.charAt(0) == hand.head().charAt(0)
+                       ? "Two Pair"
+                       : rankForTwoPair(hand.tail(), hand.head());
     }
 }
