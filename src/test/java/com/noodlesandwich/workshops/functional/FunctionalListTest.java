@@ -4,7 +4,6 @@ import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
 
 import static com.noodlesandwich.workshops.functional.FunctionalList.nil;
 import static com.noodlesandwich.workshops.functional.FunctionalListMatcher.aListOf;
@@ -23,12 +22,12 @@ public final class FunctionalListTest {
 
     @Test public void
     finds_the_first_value_that_matches_a_predicate() {
-        assertThat(FunctionalList.of(5, 7, 4, 2, 9, 8).find(even()), is(4));
+        assertThat(FunctionalList.of(5, 7, 4, 2, 9, 8).find(even(), null), is(4));
     }
 
     @Test public void
-    returns_null_if_no_item_matches_the_predicate() {
-        assertThat(FunctionalList.of(5, 7, 3, 11, 9, 7).find(even()), is(nullValue()));
+    returns_the_default_value_if_no_item_matches_the_predicate() {
+        assertThat(FunctionalList.of(5, 7, 3, 11, 9, 7).find(even(), 999), is(999));
     }
 
     private static Function<Object, String> toStringFunction =

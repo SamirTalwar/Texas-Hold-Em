@@ -33,7 +33,7 @@ public final class Hand {
     private static Function<String, Card> toCards() {
         return new Function<String, Card>() {
             @Override public Card apply(final String cardString) {
-                return new Card(cardString);
+                return Card.lookup(cardString);
             }
         };
     }

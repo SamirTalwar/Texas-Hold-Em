@@ -33,12 +33,12 @@ public abstract class FunctionalList<T> {
                    : cons(mapping.apply(head()), tail().map(mapping));
     }
 
-    public T find(final Predicate<T> predicate) {
+    public T find(final Predicate<T> predicate, final T defaultValue) {
         return isEmpty()
-                   ? null
+                   ? defaultValue
                    : predicate.matches(head())
                        ? head()
-                       : tail().find(predicate);
+                       : tail().find(predicate, defaultValue);
     }
 
     public static final class Nil<T> extends FunctionalList<T> {

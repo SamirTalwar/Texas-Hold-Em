@@ -9,7 +9,13 @@ public final class Card {
     private final Number number;
     private final Suit suit;
 
-    public Card(final String cardString) {
+    public static Card lookup(final String cardString) {
+        final Number number = Number.from(cardString.charAt(0));
+        final Suit suit = Suit.from(cardString.charAt(1));
+        return number == Number.NULL || suit == Suit.NULL ? Card.NULL : new Card(number, suit);
+    }
+
+    private Card(final String cardString) {
         this(Number.from(cardString.charAt(0)), Suit.from(cardString.charAt(1)));
     }
 
@@ -57,7 +63,7 @@ public final class Card {
                 @Override public boolean matches(final Number input) {
                     return character == input.representation;
                 }
-            });
+            }, NULL);
         }
     }
 
@@ -82,7 +88,7 @@ public final class Card {
                 @Override public boolean matches(final Suit input) {
                     return character == input.representation;
                 }
-            });
+            }, NULL);
         }
     }
 }
