@@ -4,10 +4,11 @@ import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 
 import static com.noodlesandwich.workshops.functional.FunctionalList.nil;
-import static com.noodlesandwich.workshops.functional.FunctionalListMatcher.empty;
 import static com.noodlesandwich.workshops.functional.FunctionalListMatcher.aListOf;
+import static com.noodlesandwich.workshops.functional.FunctionalListMatcher.empty;
 
 public final class FunctionalListTest {
     @Test public void
@@ -20,6 +21,16 @@ public final class FunctionalListTest {
         assertThat(FunctionalList.of(1, 2, 3).map(add(1)), is(aListOf(2, 3, 4)));
     }
 
+    @Test public void
+    finds_the_first_value_that_matches_a_predicate() {
+        assertThat(FunctionalList.of(5, 7, 4, 2, 9, 8).find(even()), is(4));
+    }
+
+    @Test public void
+    returns_null_if_no_item_matches_the_predicate() {
+        assertThat(FunctionalList.of(5, 7, 3, 11, 9, 7).find(even()), is(nullValue()));
+    }
+
     private static Function<Object, String> toStringFunction =
         new Function<Object, String>() {
             @Override public String apply(final Object input) {
@@ -27,10 +38,18 @@ public final class FunctionalListTest {
             }
         };
 
-    private Function<Integer, Integer> add(final int n) {
+    private static Function<Integer, Integer> add(final int n) {
         return new Function<Integer, Integer>() {
             @Override public Integer apply(final Integer input) {
                 return input + n;
+            }
+        };
+    }
+
+    private static Predicate<Integer> even() {
+        return new Predicate<Integer>() {
+            @Override public boolean matches(final Integer input) {
+                return input % 2 == 0;
             }
         };
     }
