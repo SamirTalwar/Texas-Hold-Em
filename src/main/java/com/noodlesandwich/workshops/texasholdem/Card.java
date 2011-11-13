@@ -4,23 +4,30 @@ import com.noodlesandwich.workshops.functional.FunctionalList;
 import com.noodlesandwich.workshops.functional.Predicate;
 
 public final class Card {
-    public static final Card NULL = new Card(Numbers.NULL);
+    public static final Card NULL = new Card(Number.NULL, Suit.NULL);
 
-    private final Numbers number;
+    private final Number number;
+    private final Suit suit;
 
     public Card(final String cardString) {
-        this(Numbers.from(cardString.charAt(0)));
+        this(Number.from(cardString.charAt(0)), Suit.from(cardString.charAt(1)));
     }
 
-    private Card(final Numbers number) {
+    private Card(final Number number, final Suit suit) {
         this.number = number;
+        this.suit = suit;
     }
 
     public boolean hasTheSameNumberAs(final Card other) {
         return number == other.number;
     }
 
-    private static enum Numbers {
+    @Override
+    public String toString() {
+        return "" + number.representation + suit.representation;
+    }
+
+    private static enum Number {
         NULL('\0'),
 
         _2('2'),
@@ -37,17 +44,42 @@ public final class Card {
         _K('K'),
         _A('A');
 
-        private static final FunctionalList<Numbers> NUMBERS = FunctionalList.of(values());
+        private static final FunctionalList<Number> NUMBERS = FunctionalList.of(values());
 
         private final char representation;
 
-        Numbers(final char representation) {
+        Number(final char representation) {
             this.representation = representation;
         }
 
-        public static Numbers from(final char character) {
-            return NUMBERS.find(new Predicate<Numbers>() {
-                @Override public boolean matches(final Numbers input) {
+        public static Number from(final char character) {
+            return NUMBERS.find(new Predicate<Number>() {
+                @Override public boolean matches(final Number input) {
+                    return character == input.representation;
+                }
+            });
+        }
+    }
+
+    private static enum Suit {
+        NULL('\0'),
+
+        Spades('s'),
+        Diamonds('d'),
+        Clubs('c'),
+        Hearts('h');
+
+        private static final FunctionalList<Suit> SUITS = FunctionalList.of(values());
+
+        private final char representation;
+
+        Suit(final char representation) {
+            this.representation = representation;
+        }
+
+        public static Suit from(final char character) {
+            return SUITS.find(new Predicate<Suit>() {
+                @Override public boolean matches(final Suit input) {
                     return character == input.representation;
                 }
             });

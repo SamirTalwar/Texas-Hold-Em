@@ -6,11 +6,17 @@ import org.hamcrest.TypeSafeDiagnosingMatcher;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasToString;
 
 public final class CardTest {
     @Test public void
     cards_can_test_whether_they_have_the_same_number_as_another() {
         assertThat(new Card("5d"), hasTheSameNumberAs(new Card("5s")));
+    }
+
+    @Test public void
+    cards_can_be_converted_to_strings() {
+        assertThat(new Card("Ks"), hasToString("Ks"));
     }
 
     private static Matcher<? super Card> hasTheSameNumberAs(final Card expected) {
