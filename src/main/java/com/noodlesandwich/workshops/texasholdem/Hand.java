@@ -2,9 +2,8 @@ package com.noodlesandwich.workshops.texasholdem;
 
 import com.noodlesandwich.workshops.functional.Function;
 import com.noodlesandwich.workshops.functional.FunctionalList;
-import com.noodlesandwich.workshops.texasholdem.Ranks.Rank;
 
-import static com.noodlesandwich.workshops.texasholdem.Ranks.RANKS;
+import static com.noodlesandwich.workshops.texasholdem.Rank.ranks;
 
 public final class Hand {
     private final FunctionalList<Card> hand;
@@ -14,13 +13,13 @@ public final class Hand {
     }
 
     public String rank() {
-        return rank(RANKS);
+        return rank(ranks());
     }
 
     public String rank(final FunctionalList<Rank> ranks) {
         final Rank currentRank = ranks.head();
         return currentRank.matches(hand)
-                   ? currentRank.name()
+                   ? currentRank.rankName()
                    : rank(ranks.tail());
     }
 
