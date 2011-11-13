@@ -27,6 +27,12 @@ public abstract class FunctionalList<T> {
 
     public abstract FunctionalList<T> tail();
 
+    public <U> FunctionalList<U> map(final Function<T, U> mapping) {
+        return isEmpty()
+                   ? FunctionalList.<U>nil()
+                   : cons(mapping.apply(head()), tail().map(mapping));
+    }
+
     public static final class Nil<T> extends FunctionalList<T> {
         @Override
         public boolean isEmpty() {
