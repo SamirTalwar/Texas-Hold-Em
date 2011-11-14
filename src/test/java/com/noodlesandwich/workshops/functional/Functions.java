@@ -1,6 +1,8 @@
 package com.noodlesandwich.workshops.functional;
 
 public final class Functions {
+    private Functions() { }
+
     public static Function<Object, String> toStringFunction() {
         return new Function<Object, String>() {
             @Override public String apply(final Object input) {

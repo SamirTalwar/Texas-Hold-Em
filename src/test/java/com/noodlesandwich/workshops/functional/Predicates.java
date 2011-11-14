@@ -1,6 +1,8 @@
 package com.noodlesandwich.workshops.functional;
 
 public final class Predicates {
+    private Predicates() { }
+
     public static <T> Predicate<T> equalTo(final T value) {
         return new Predicate<T>() {
             @Override public boolean matches(final T input) {
