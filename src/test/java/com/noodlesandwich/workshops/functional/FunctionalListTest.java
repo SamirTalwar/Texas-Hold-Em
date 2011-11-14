@@ -10,11 +10,17 @@ import static com.noodlesandwich.workshops.functional.FunctionalListMatcher.aLis
 import static com.noodlesandwich.workshops.functional.FunctionalListMatcher.empty;
 import static com.noodlesandwich.workshops.functional.FunctionalMapMatcher.aMapOf;
 import static com.noodlesandwich.workshops.functional.FunctionalMapMatcher.entry;
+import static com.noodlesandwich.workshops.functional.Functions.add;
+import static com.noodlesandwich.workshops.functional.Functions.oddsAndEvens;
+import static com.noodlesandwich.workshops.functional.Functions.toStringFunction;
+import static com.noodlesandwich.workshops.functional.Predicates.alwaysFalse;
+import static com.noodlesandwich.workshops.functional.Predicates.equalTo;
+import static com.noodlesandwich.workshops.functional.Predicates.even;
 
 public final class FunctionalListTest {
     @Test public void
     maps_an_empty_list_to_an_empty_list() {
-        assertThat(nil().map(toStringFunction), is(empty(String.class)));
+        assertThat(nil().map(toStringFunction()), is(empty(String.class)));
     }
 
     @Test public void
@@ -44,7 +50,7 @@ public final class FunctionalListTest {
 
     @Test public void
     removes_an_element_from_a_list() {
-        assertThat(FunctionalList.of(5, 4, 3).remove(Predicates.equalTo(4)), is(aListContaining(5, 3)));
+        assertThat(FunctionalList.of(5, 4, 3).remove(equalTo(4)), is(aListContaining(5, 3)));
     }
 
     @Test public void
@@ -63,44 +69,5 @@ public final class FunctionalListTest {
         assertThat(FunctionalList.of(7, 6, 5, 4, 8, 7, 6, 5).groupBy(oddsAndEvens()),
                    is(aMapOf(entry(0).with(6, 4, 8, 6),
                              entry(1).with(7, 5, 7, 5))));
-    }
-
-    private static Function<Object, String> toStringFunction =
-        new Function<Object, String>() {
-            @Override public String apply(final Object input) {
-                return input.toString();
-            }
-        };
-
-    private static Function<Integer, Integer> add(final int n) {
-        return new Function<Integer, Integer>() {
-            @Override public Integer apply(final Integer input) {
-                return input + n;
-            }
-        };
-    }
-
-    private static Predicate<Integer> even() {
-        return new Predicate<Integer>() {
-            @Override public boolean matches(final Integer input) {
-                return input % 2 == 0;
-            }
-        };
-    }
-
-    private static <T> Predicate<T> alwaysFalse(final Class<T> type) {
-        return new Predicate<T>() {
-            @Override public boolean matches(final T input) {
-                return false;
-            }
-        };
-    }
-
-    private static Function<Integer, Integer> oddsAndEvens() {
-        return new Function<Integer, Integer>() {
-            @Override public Integer apply(final Integer input) {
-                return input % 2;
-            }
-        };
     }
 }
