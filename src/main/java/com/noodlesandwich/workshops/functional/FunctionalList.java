@@ -41,6 +41,26 @@ public abstract class FunctionalList<T> {
                        : tail().find(predicate, defaultValue);
     }
 
+    public <K> FunctionalMap<K, T> groupBy(final Function<T, K> grouping) {
+        return groupBy(grouping, new FunctionalMap<K, T>());
+    }
+
+    private <K> FunctionalMap<K, T> groupBy(final Function<T, K> grouping, final FunctionalMap<K, T> map) {
+        return isEmpty()
+                   ? map
+                   : tail().groupBy(grouping, map.with(grouping.apply(head()), head()));
+    }
+
+    public int size() {
+        return size(0);
+    }
+
+    private int size(final int currentSize) {
+        return isEmpty()
+                  ? currentSize
+                  : tail().size(currentSize + 1);
+    }
+
     public static final class Nil<T> extends FunctionalList<T> {
         @Override
         public boolean isEmpty() {

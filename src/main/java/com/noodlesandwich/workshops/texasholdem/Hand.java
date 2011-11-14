@@ -3,7 +3,7 @@ package com.noodlesandwich.workshops.texasholdem;
 import com.noodlesandwich.workshops.functional.Function;
 import com.noodlesandwich.workshops.functional.FunctionalList;
 
-import static com.noodlesandwich.workshops.texasholdem.Rank.ranks;
+import static com.noodlesandwich.workshops.texasholdem.Category.categories;
 
 public final class Hand {
     private final FunctionalList<Card> hand;
@@ -12,15 +12,15 @@ public final class Hand {
         this.hand = FunctionalList.of(hand.split(" ")).map(toCards());
     }
 
-    public String rank() {
-        return rank(ranks());
+    public String category() {
+        return categorise(categories());
     }
 
-    public String rank(final FunctionalList<Rank> ranks) {
-        final Rank currentRank = ranks.head();
-        return currentRank.matches(hand)
-                   ? currentRank.rankName()
-                   : rank(ranks.tail());
+    public String categorise(final FunctionalList<Category> categories) {
+        final Category category = categories.head();
+        return category.matches(hand)
+                   ? category.categoryName()
+                   : categorise(categories.tail());
     }
 
     private static Function<String, Card> toCards() {

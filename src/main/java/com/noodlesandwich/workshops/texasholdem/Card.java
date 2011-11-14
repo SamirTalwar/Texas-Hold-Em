@@ -4,36 +4,40 @@ import com.noodlesandwich.workshops.functional.FunctionalList;
 import com.noodlesandwich.workshops.functional.Predicate;
 
 public final class Card {
-    public static final Card NULL = new Card(Number.NULL, Suit.NULL);
+    public static final Card NULL = new Card(Rank.NULL, Suit.NULL);
 
-    private final Number number;
+    private final Rank rank;
     private final Suit suit;
 
     public static Card lookup(final String cardString) {
-        final Number number = Number.from(cardString.charAt(0));
+        final Rank number = Rank.from(cardString.charAt(0));
         final Suit suit = Suit.from(cardString.charAt(1));
-        return number == Number.NULL || suit == Suit.NULL ? Card.NULL : new Card(number, suit);
+        return number == Rank.NULL || suit == Suit.NULL ? Card.NULL : new Card(number, suit);
     }
 
     private Card(final String cardString) {
-        this(Number.from(cardString.charAt(0)), Suit.from(cardString.charAt(1)));
+        this(Rank.from(cardString.charAt(0)), Suit.from(cardString.charAt(1)));
     }
 
-    private Card(final Number number, final Suit suit) {
-        this.number = number;
+    private Card(final Rank number, final Suit suit) {
+        this.rank = number;
         this.suit = suit;
     }
 
+    public Rank rank() {
+        return rank;
+    }
+
     public boolean hasTheSameNumberAs(final Card other) {
-        return number == other.number;
+        return rank == other.rank;
     }
 
     @Override
     public String toString() {
-        return "" + number.representation + suit.representation;
+        return "" + rank.representation + suit.representation;
     }
 
-    private static enum Number {
+    public static enum Rank {
         NULL('\0'),
 
         _2('2'),
@@ -50,24 +54,24 @@ public final class Card {
         _K('K'),
         _A('A');
 
-        private static final FunctionalList<Number> NUMBERS = FunctionalList.of(values());
+        private static final FunctionalList<Rank> RANKS = FunctionalList.of(values());
 
         private final char representation;
 
-        Number(final char representation) {
+        Rank(final char representation) {
             this.representation = representation;
         }
 
-        public static Number from(final char character) {
-            return NUMBERS.find(new Predicate<Number>() {
-                @Override public boolean matches(final Number input) {
+        public static Rank from(final char character) {
+            return RANKS.find(new Predicate<Rank>() {
+                @Override public boolean matches(final Rank input) {
                     return character == input.representation;
                 }
             }, NULL);
         }
     }
 
-    private static enum Suit {
+    public static enum Suit {
         NULL('\0'),
 
         Spades('s'),
