@@ -5,8 +5,8 @@ import org.junit.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-import static com.noodlesandwich.workshops.functional.FunctionalMapMatcher.aMapOf;
-import static com.noodlesandwich.workshops.functional.FunctionalMapMatcher.entry;
+import static com.noodlesandwich.workshops.functional.testutils.FunctionalMapMatcher.aMapOf;
+import static com.noodlesandwich.workshops.functional.testutils.FunctionalMapMatcher.entry;
 
 public class FunctionalMapTest {
     @SuppressWarnings("unchecked")

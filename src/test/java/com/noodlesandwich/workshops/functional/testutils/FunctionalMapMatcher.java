@@ -1,4 +1,4 @@
-package com.noodlesandwich.workshops.functional;
+package com.noodlesandwich.workshops.functional.testutils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -6,7 +6,11 @@ import java.util.List;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-import static com.noodlesandwich.workshops.functional.FunctionalListMatcher.anUnorderedListContaining;
+import com.noodlesandwich.workshops.functional.FunctionalList;
+import com.noodlesandwich.workshops.functional.FunctionalMap;
+import com.noodlesandwich.workshops.functional.Predicate;
+
+import static com.noodlesandwich.workshops.functional.testutils.FunctionalListMatcher.anUnorderedListContaining;
 
 public final class FunctionalMapMatcher<K, V> extends TypeSafeDiagnosingMatcher<FunctionalMap<K, V>> {
     private final List<EntryMatcher<K, V>> entries;

@@ -1,4 +1,4 @@
-package com.noodlesandwich.workshops.functional;
+package com.noodlesandwich.workshops.functional.testutils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,7 +7,9 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-import static com.noodlesandwich.workshops.functional.Predicates.equalTo;
+import com.noodlesandwich.workshops.functional.FunctionalList;
+
+import static com.noodlesandwich.workshops.functional.testutils.Predicates.equalTo;
 
 public final class FunctionalListMatcher<T> {
     private FunctionalListMatcher() { }

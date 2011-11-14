@@ -9,7 +9,7 @@ import static org.hamcrest.Matchers.sameInstance;
 
 import static com.noodlesandwich.workshops.functional.FunctionalList.cons;
 import static com.noodlesandwich.workshops.functional.FunctionalList.nil;
-import static com.noodlesandwich.workshops.functional.FunctionalListMatcher.empty;
+import static com.noodlesandwich.workshops.functional.testutils.FunctionalListMatcher.empty;
 
 public final class ConsTest {
     @Test public void

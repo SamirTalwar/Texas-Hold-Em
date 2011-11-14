@@ -10,7 +10,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import static com.noodlesandwich.workshops.functional.FunctionalList.nil;
-import static com.noodlesandwich.workshops.functional.FunctionalListMatcher.empty;
+import static com.noodlesandwich.workshops.functional.testutils.FunctionalListMatcher.empty;
 
 public final class NilTest {
     @Rule

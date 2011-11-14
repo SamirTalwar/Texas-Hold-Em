@@ -1,4 +1,6 @@
-package com.noodlesandwich.workshops.functional;
+package com.noodlesandwich.workshops.functional.testutils;
+
+import com.noodlesandwich.workshops.functional.Function;
 
 public final class Functions {
     private Functions() { }

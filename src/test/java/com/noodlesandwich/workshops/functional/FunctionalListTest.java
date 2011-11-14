@@ -6,16 +6,16 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import static com.noodlesandwich.workshops.functional.FunctionalList.nil;
-import static com.noodlesandwich.workshops.functional.FunctionalListMatcher.aListContaining;
-import static com.noodlesandwich.workshops.functional.FunctionalListMatcher.empty;
-import static com.noodlesandwich.workshops.functional.FunctionalMapMatcher.aMapOf;
-import static com.noodlesandwich.workshops.functional.FunctionalMapMatcher.entry;
-import static com.noodlesandwich.workshops.functional.Functions.add;
-import static com.noodlesandwich.workshops.functional.Functions.oddsAndEvens;
-import static com.noodlesandwich.workshops.functional.Functions.toStringFunction;
-import static com.noodlesandwich.workshops.functional.Predicates.alwaysFalse;
-import static com.noodlesandwich.workshops.functional.Predicates.equalTo;
-import static com.noodlesandwich.workshops.functional.Predicates.even;
+import static com.noodlesandwich.workshops.functional.testutils.FunctionalListMatcher.aListContaining;
+import static com.noodlesandwich.workshops.functional.testutils.FunctionalListMatcher.empty;
+import static com.noodlesandwich.workshops.functional.testutils.FunctionalMapMatcher.aMapOf;
+import static com.noodlesandwich.workshops.functional.testutils.FunctionalMapMatcher.entry;
+import static com.noodlesandwich.workshops.functional.testutils.Functions.add;
+import static com.noodlesandwich.workshops.functional.testutils.Functions.oddsAndEvens;
+import static com.noodlesandwich.workshops.functional.testutils.Functions.toStringFunction;
+import static com.noodlesandwich.workshops.functional.testutils.Predicates.alwaysFalse;
+import static com.noodlesandwich.workshops.functional.testutils.Predicates.equalTo;
+import static com.noodlesandwich.workshops.functional.testutils.Predicates.even;
 
 public final class FunctionalListTest {
     @Test public void
