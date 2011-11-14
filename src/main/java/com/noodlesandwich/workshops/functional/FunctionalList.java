@@ -37,8 +37,24 @@ public abstract class FunctionalList<T> {
         return isEmpty()
                    ? defaultValue
                    : predicate.matches(head())
-                       ? head()
-                       : tail().find(predicate, defaultValue);
+                         ? head()
+                         : tail().find(predicate, defaultValue);
+    }
+
+    public boolean contains(final Predicate<T> predicate) {
+        return isEmpty()
+                   ? false
+                   : predicate.matches(head())
+                         ? true
+                         : tail().contains(predicate);
+    }
+
+    public FunctionalList<T> remove(final Predicate<T> predicate) {
+        return isEmpty()
+                   ? FunctionalList.<T>nil()
+                   : predicate.matches(head())
+                         ? tail()
+                         : cons(head(), tail().remove(predicate));
     }
 
     public <K> FunctionalMap<K, T> groupBy(final Function<T, K> grouping) {

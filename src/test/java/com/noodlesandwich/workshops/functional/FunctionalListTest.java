@@ -32,6 +32,31 @@ public final class FunctionalListTest {
         assertThat(FunctionalList.of(5, 7, 3, 11, 9, 7).find(even(), 999), is(999));
     }
 
+    @Test public void
+    detects_that_a_list_contains_an_element() {
+        assertThat(FunctionalList.of(7, 5, 6, 2).contains(even()), is(true));
+    }
+
+    @Test public void
+    detects_that_a_list_does_not_contain_an_element() {
+        assertThat(FunctionalList.of(7, 5, 3, 1).contains(even()), is(false));
+    }
+
+    @Test public void
+    removes_an_element_from_a_list() {
+        assertThat(FunctionalList.of(5, 4, 3).remove(equalTo(4)), is(aListContaining(5, 3)));
+    }
+
+    @Test public void
+    does_not_remove_more_than_one_element() {
+        assertThat(FunctionalList.of(5, 4, 3, 2).remove(even()), is(aListContaining(5, 3, 2)));
+    }
+
+    @Test public void
+    returns_the_same_list_if_no_element_was_found() {
+        assertThat(FunctionalList.of(5, 4, 3, 2).remove(alwaysFalse(Integer.class)), is(aListContaining(5, 4, 3, 2)));
+    }
+
     @SuppressWarnings("unchecked")
     @Test public void
     groups_by_a_key_generated_by_a_function() {
@@ -55,10 +80,26 @@ public final class FunctionalListTest {
         };
     }
 
+    private static <T> Predicate<T> equalTo(final T value) {
+        return new Predicate<T>() {
+            @Override public boolean matches(final T input) {
+                return value.equals(input);
+            }
+        };
+    }
+
     private static Predicate<Integer> even() {
         return new Predicate<Integer>() {
             @Override public boolean matches(final Integer input) {
                 return input % 2 == 0;
+            }
+        };
+    }
+
+    private static <T> Predicate<T> alwaysFalse(final Class<T> type) {
+        return new Predicate<T>() {
+            @Override public boolean matches(final T input) {
+                return false;
             }
         };
     }

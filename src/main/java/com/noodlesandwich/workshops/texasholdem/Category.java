@@ -13,38 +13,15 @@ public enum Category {
     }),
 
     TwoPair("Two Pair", new Predicate<FunctionalList<Card>>() {
+        @SuppressWarnings("unchecked")
         @Override public boolean matches(final FunctionalList<Card> cards) {
-            return categoryForPair(cards, Card.NULL);
-        }
-
-        private boolean categoryForPair(final FunctionalList<Card> hand, final Card last) {
-            return hand.isEmpty()
-                       ? false
-                       : last.hasTheSameNumberAs(hand.head())
-                           ? categoryForTwoPair(hand.tail(), Card.NULL)
-                           : categoryForPair(hand.tail(), hand.head());
-        }
-
-        private boolean categoryForTwoPair(final FunctionalList<Card> hand, final Card last) {
-            return hand.isEmpty()
-                       ? false
-                       : last.hasTheSameNumberAs(hand.head())
-                           ? true
-                           : categoryForTwoPair(hand.tail(), hand.head());
+            return cards.groupBy(number()).hasItems(size(2), size(2));
         }
     }),
 
     Pair("Pair", new Predicate<FunctionalList<Card>>() {
         @Override public boolean matches(final FunctionalList<Card> cards) {
-            return categoryForPair(cards, Card.NULL);
-        }
-
-        private boolean categoryForPair(final FunctionalList<Card> hand, final Card last) {
-            return hand.isEmpty()
-                       ? false
-                       : last.hasTheSameNumberAs(hand.head())
-                           ? true
-                           : categoryForPair(hand.tail(), hand.head());
+            return cards.groupBy(number()).hasItem(size(2));
         }
     }),
 

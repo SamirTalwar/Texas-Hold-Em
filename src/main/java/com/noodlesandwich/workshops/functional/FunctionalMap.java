@@ -21,12 +21,32 @@ public final class FunctionalMap<K, V> {
         return hasItem(predicate, entries);
     }
 
-    public boolean hasItem(final Predicate<FunctionalList<V>> predicate, final FunctionalList<Entry> entriesToCheck) {
+    private boolean hasItem(final Predicate<FunctionalList<V>> predicate, final FunctionalList<Entry> entriesToCheck) {
         return entriesToCheck.isEmpty()
                    ? false
                    : predicate.matches(entriesToCheck.head().values)
                          ? true
                          : hasItem(predicate, entriesToCheck.tail());
+    }
+
+    public boolean hasItems(final Predicate<FunctionalList<V>>... predicates) {
+        return hasItems(FunctionalList.of(predicates), entries);
+    }
+
+    private boolean hasItems(final FunctionalList<Predicate<FunctionalList<V>>> predicates, final FunctionalList<Entry> entriesToCheck) {
+        return predicates.isEmpty()
+                   ? true
+                   : !entriesToCheck.contains(forEntry(predicates.head()))
+                         ? false
+                         : hasItems(predicates.tail(), entriesToCheck.remove(forEntry(predicates.head())));
+    }
+
+    private Predicate<Entry> forEntry(final Predicate<FunctionalList<V>> predicate) {
+        return new Predicate<Entry>() {
+            @Override public boolean matches(final Entry entry) {
+                return predicate.matches(entry.values);
+            }
+        };
     }
 
     private FunctionalList<Entry> add(final K key, final V value, final FunctionalList<Entry> entriesToCheck) {
