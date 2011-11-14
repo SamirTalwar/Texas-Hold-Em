@@ -44,7 +44,7 @@ public final class FunctionalListTest {
 
     @Test public void
     removes_an_element_from_a_list() {
-        assertThat(FunctionalList.of(5, 4, 3).remove(equalTo(4)), is(aListContaining(5, 3)));
+        assertThat(FunctionalList.of(5, 4, 3).remove(Predicates.equalTo(4)), is(aListContaining(5, 3)));
     }
 
     @Test public void
@@ -76,14 +76,6 @@ public final class FunctionalListTest {
         return new Function<Integer, Integer>() {
             @Override public Integer apply(final Integer input) {
                 return input + n;
-            }
-        };
-    }
-
-    private static <T> Predicate<T> equalTo(final T value) {
-        return new Predicate<T>() {
-            @Override public boolean matches(final T input) {
-                return value.equals(input);
             }
         };
     }

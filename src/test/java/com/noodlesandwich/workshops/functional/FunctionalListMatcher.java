@@ -7,7 +7,7 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-import static com.noodlesandwich.workshops.functional.FunctionalList.cons;
+import static com.noodlesandwich.workshops.functional.Predicates.equalTo;
 
 public final class FunctionalListMatcher<T> {
     public static <T> Matcher<? super FunctionalList<T>> empty() {
@@ -92,23 +92,9 @@ public final class FunctionalListMatcher<T> {
                        ? true
                        : one.isEmpty() || two.isEmpty()
                              ? false
-                             : !contains(one.head(), two)
+                             : !two.contains(equalTo(one.head()))
                                    ? false
-                                   : unorderedListEquals(one.tail(), remove(one.head(), two));
-        }
-
-        private boolean contains(final T item, final FunctionalList<T> list) {
-            return list.isEmpty()
-                       ? false
-                       : item.equals(list.head())
-                             ? true
-                             : contains(item, list.tail());
-        }
-
-        private FunctionalList<T> remove(final T item, final FunctionalList<T> list) {
-            return item.equals(list.head())
-                       ? list.tail()
-                       : cons(list.head(), remove(item, list.tail()));
+                                   : unorderedListEquals(one.tail(), two.remove(equalTo(one.head())));
         }
     }
 
