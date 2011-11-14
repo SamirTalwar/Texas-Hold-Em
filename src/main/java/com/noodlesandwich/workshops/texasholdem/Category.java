@@ -8,6 +8,13 @@ import com.noodlesandwich.workshops.texasholdem.Card.Rank;
 import com.noodlesandwich.workshops.texasholdem.Card.Suit;
 
 public enum Category {
+    FullHouse("Full House", new Predicate<FunctionalList<Card>>() {
+        @SuppressWarnings("unchecked")
+        @Override public boolean matches(final FunctionalList<Card> cards) {
+            return cards.groupBy(rank()).containsValues(size(3), size(2));
+        }
+    }),
+
     Flush("Flush", new Predicate<FunctionalList<Card>>() {
         @Override public boolean matches(final FunctionalList<Card> cards) {
             return cards.groupBy(suit()).containsValue(size(5));

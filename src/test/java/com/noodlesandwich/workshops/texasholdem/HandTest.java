@@ -35,4 +35,9 @@ public final class HandTest {
     detects_a_flush() {
         assertThat(new Hand("2s 7s 7d 8h Ts Js Ks").category(), is("Flush"));
     }
+
+    @Test public void
+    detects_a_full_house() {
+        assertThat(new Hand("3h 5d 5c 8s 8h 8c Tc").category(), is("Full House"));
+    }
 }
