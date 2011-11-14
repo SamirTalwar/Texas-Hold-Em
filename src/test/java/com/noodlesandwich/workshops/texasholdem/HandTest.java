@@ -40,4 +40,9 @@ public final class HandTest {
     detects_a_full_house() {
         assertThat(new Hand("3h 5d 5c 8s 8h 8c Tc").category(), is("Full House"));
     }
+
+    @Test public void
+    detects_four_of_a_kind() {
+        assertThat(new Hand("4d 4s 4c 4h 5s 5d 6c").category(), is("Four of a Kind"));
+    }
 }
