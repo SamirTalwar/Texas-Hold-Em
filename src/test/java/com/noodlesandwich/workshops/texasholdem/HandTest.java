@@ -30,4 +30,9 @@ public final class HandTest {
     detects_a_straight() {
         assertThat(new Hand("6d 8c 9d Ts Td Jh Qh").category(), is("Straight"));
     }
+
+    @Test public void
+    detects_a_flush() {
+        assertThat(new Hand("2s 7s 7d 8h Ts Js Ks").category(), is("Flush"));
+    }
 }

@@ -5,8 +5,15 @@ import com.noodlesandwich.workshops.functional.FunctionalList;
 import com.noodlesandwich.workshops.functional.FunctionalMap;
 import com.noodlesandwich.workshops.functional.Predicate;
 import com.noodlesandwich.workshops.texasholdem.Card.Rank;
+import com.noodlesandwich.workshops.texasholdem.Card.Suit;
 
 public enum Category {
+    Flush("Flush", new Predicate<FunctionalList<Card>>() {
+        @Override public boolean matches(final FunctionalList<Card> cards) {
+            return cards.groupBy(suit()).containsValue(size(5));
+        }
+    }),
+
     Straight("Straight", new Predicate<FunctionalList<Card>>() {
         @Override public boolean matches(final FunctionalList<Card> cards) {
             final FunctionalMap<Rank, Card> groupedCards = cards.groupBy(rank());
@@ -67,6 +74,14 @@ public enum Category {
         return new Function<Card, Rank>() {
             @Override public Rank apply(final Card card) {
                 return card.rank();
+            }
+        };
+    }
+
+    private static Function<Card, Suit> suit() {
+        return new Function<Card, Suit>() {
+            @Override public Suit apply(final Card card) {
+                return card.suit();
             }
         };
     }

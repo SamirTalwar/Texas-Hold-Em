@@ -28,6 +28,10 @@ public final class Card {
         return rank;
     }
 
+    public Suit suit() {
+        return suit;
+    }
+
     public boolean hasTheSameNumberAs(final Card other) {
         return rank == other.rank;
     }
