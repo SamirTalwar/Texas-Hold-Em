@@ -72,7 +72,7 @@ public final class FunctionalMapMatcher<K, V> extends TypeSafeDiagnosingMatcher<
 
         @Override
         protected boolean matchesSafely(final FunctionalMap<K, V> map, final Description mismatchDescription) {
-            if (!map.hasItem(matching(key, values))) {
+            if (!map.containsValue(matching(key, values))) {
                 mismatchDescription.appendText("did not contain an entry matching ").appendValue(key)
                                    .appendText(" with ").appendValueList("[", ", ", "]", values);
                 return false;

@@ -47,7 +47,7 @@ public class FunctionalMapTest {
             .with('n', 9)
             .with('t', 10);
 
-        assertThat(map.hasItems(containing(3), containing(5), containing(7)), is(true));
+        assertThat(map.containsValues(containing(3), containing(5), containing(7)), is(true));
     }
 
     @SuppressWarnings("unchecked")
@@ -65,7 +65,7 @@ public class FunctionalMapTest {
             .with('n', 9)
             .with('t', 10);
 
-        assertThat(map.hasItems(containing(3), containing(3)), is(false));
+        assertThat(map.containsValues(containing(3), containing(3)), is(false));
     }
 
     @Test public void

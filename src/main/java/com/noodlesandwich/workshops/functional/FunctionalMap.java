@@ -17,28 +17,32 @@ public final class FunctionalMap<K, V> {
         return new FunctionalMap<K, V>(add(key, value, entries));
     }
 
-    public boolean hasItem(final Predicate<FunctionalList<V>> predicate) {
-        return hasItem(predicate, entries);
+    public boolean containsValue(final Predicate<FunctionalList<V>> predicate) {
+        return containsValue(predicate, entries);
     }
 
-    private boolean hasItem(final Predicate<FunctionalList<V>> predicate, final FunctionalList<Entry> entriesToCheck) {
+    private boolean containsValue(final Predicate<FunctionalList<V>> predicate,
+                                  final FunctionalList<Entry> entriesToCheck)
+    {
         return entriesToCheck.isEmpty()
                    ? false
                    : predicate.matches(entriesToCheck.head().values)
                          ? true
-                         : hasItem(predicate, entriesToCheck.tail());
+                         : containsValue(predicate, entriesToCheck.tail());
     }
 
-    public boolean hasItems(final Predicate<FunctionalList<V>>... predicates) {
-        return hasItems(FunctionalList.of(predicates), entries);
+    public boolean containsValues(final Predicate<FunctionalList<V>>... predicates) {
+        return containsValues(FunctionalList.of(predicates), entries);
     }
 
-    private boolean hasItems(final FunctionalList<Predicate<FunctionalList<V>>> predicates, final FunctionalList<Entry> entriesToCheck) {
+    private boolean containsValues(final FunctionalList<Predicate<FunctionalList<V>>> predicates,
+                                   final FunctionalList<Entry> entriesToCheck)
+    {
         return predicates.isEmpty()
                    ? true
                    : !entriesToCheck.contains(forEntry(predicates.head()))
                          ? false
-                         : hasItems(predicates.tail(), entriesToCheck.remove(forEntry(predicates.head())));
+                         : containsValues(predicates.tail(), entriesToCheck.remove(forEntry(predicates.head())));
     }
 
     public boolean containsKeys(final FunctionalList<K> keys) {

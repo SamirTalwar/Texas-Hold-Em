@@ -20,20 +20,20 @@ public enum Category {
 
     ThreeOfAKind("Three of a Kind", new Predicate<FunctionalList<Card>>() {
         @Override public boolean matches(final FunctionalList<Card> cards) {
-            return cards.groupBy(rank()).hasItem(size(3));
+            return cards.groupBy(rank()).containsValue(size(3));
         }
     }),
 
     TwoPair("Two Pair", new Predicate<FunctionalList<Card>>() {
         @SuppressWarnings("unchecked")
         @Override public boolean matches(final FunctionalList<Card> cards) {
-            return cards.groupBy(rank()).hasItems(size(2), size(2));
+            return cards.groupBy(rank()).containsValues(size(2), size(2));
         }
     }),
 
     Pair("Pair", new Predicate<FunctionalList<Card>>() {
         @Override public boolean matches(final FunctionalList<Card> cards) {
-            return cards.groupBy(rank()).hasItem(size(2));
+            return cards.groupBy(rank()).containsValue(size(2));
         }
     }),
 
