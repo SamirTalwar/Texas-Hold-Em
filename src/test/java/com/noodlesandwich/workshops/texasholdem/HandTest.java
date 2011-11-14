@@ -25,4 +25,9 @@ public final class HandTest {
     detects_three_of_a_kind() {
         assertThat(new Hand("4h 7s 7c 7d Td Ks Ad").category(), is("Three of a Kind"));
     }
+
+    @Test public void
+    detects_a_straight() {
+        assertThat(new Hand("6d 8c 9d Ts Td Jh Qh").category(), is("Straight"));
+    }
 }

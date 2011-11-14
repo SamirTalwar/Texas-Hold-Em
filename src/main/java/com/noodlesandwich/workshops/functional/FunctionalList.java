@@ -61,6 +61,18 @@ public abstract class FunctionalList<T> {
         return groupBy(grouping, new FunctionalMap<K, T>());
     }
 
+    public FunctionalList<FunctionalList<T>> subListsOfSize(final int size) {
+        return size() < size
+                   ? FunctionalList.<FunctionalList<T>>nil()
+                   : cons(subListOfSize(size), tail().subListsOfSize(size));
+    }
+
+    private FunctionalList<T> subListOfSize(final int size) {
+        return size == 0
+                   ? FunctionalList.<T>nil()
+                   : cons(head(), tail().subListOfSize(size - 1));
+    }
+
     private <K> FunctionalMap<K, T> groupBy(final Function<T, K> grouping, final FunctionalMap<K, T> map) {
         return isEmpty()
                    ? map

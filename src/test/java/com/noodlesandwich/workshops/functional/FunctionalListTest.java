@@ -70,4 +70,17 @@ public final class FunctionalListTest {
                    is(aMapOf(entry(0).with(6, 4, 8, 6),
                              entry(1).with(7, 5, 7, 5))));
     }
+
+    @SuppressWarnings("unchecked")
+    @Test public void
+    partitions_a_list_into_sub_lists_of_a_given_size() {
+        assertThat(FunctionalList.of(6, 1, 7, 2, 8, 4, 3, 2, 6, 7, 8, 10).subListsOfSize(6),
+                   is(aListContaining(aListContaining(6, 1, 7, 2, 8, 4),
+                                      aListContaining(1, 7, 2, 8, 4, 3),
+                                      aListContaining(7, 2, 8, 4, 3, 2),
+                                      aListContaining(2, 8, 4, 3, 2, 6),
+                                      aListContaining(8, 4, 3, 2, 6, 7),
+                                      aListContaining(4, 3, 2, 6, 7, 8),
+                                      aListContaining(3, 2, 6, 7, 8, 10))));
+    }
 }

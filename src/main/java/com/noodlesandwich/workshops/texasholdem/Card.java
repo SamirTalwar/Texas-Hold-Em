@@ -54,8 +54,6 @@ public final class Card {
         _K('K'),
         _A('A');
 
-        private static final FunctionalList<Rank> RANKS = FunctionalList.of(values());
-
         private final char representation;
 
         Rank(final char representation) {
@@ -79,8 +77,6 @@ public final class Card {
         Clubs('c'),
         Hearts('h');
 
-        private static final FunctionalList<Suit> SUITS = FunctionalList.of(values());
-
         private final char representation;
 
         Suit(final char representation) {
@@ -95,4 +91,8 @@ public final class Card {
             }, NULL);
         }
     }
+
+    public static final FunctionalList<Rank> RANKS = FunctionalList.of(Rank.values());
+
+    public static final FunctionalList<Suit> SUITS = FunctionalList.of(Suit.values());
 }

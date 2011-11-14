@@ -2,10 +2,22 @@ package com.noodlesandwich.workshops.texasholdem;
 
 import com.noodlesandwich.workshops.functional.Function;
 import com.noodlesandwich.workshops.functional.FunctionalList;
+import com.noodlesandwich.workshops.functional.FunctionalMap;
 import com.noodlesandwich.workshops.functional.Predicate;
 import com.noodlesandwich.workshops.texasholdem.Card.Rank;
 
 public enum Category {
+    Straight("Straight", new Predicate<FunctionalList<Card>>() {
+        @Override public boolean matches(final FunctionalList<Card> cards) {
+            final FunctionalMap<Rank, Card> groupedCards = cards.groupBy(rank());
+            return Card.RANKS.subListsOfSize(5).contains(new Predicate<FunctionalList<Rank>>() {
+                @Override public boolean matches(final FunctionalList<Rank> ranks) {
+                    return groupedCards.containsKeys(ranks);
+                }
+            });
+        }
+    }),
+
     ThreeOfAKind("Three of a Kind", new Predicate<FunctionalList<Card>>() {
         @Override public boolean matches(final FunctionalList<Card> cards) {
             return cards.groupBy(rank()).hasItem(size(3));

@@ -5,8 +5,10 @@ import java.util.Collection;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
+import com.noodlesandwich.workshops.functional.Function;
 import com.noodlesandwich.workshops.functional.FunctionalList;
 
 import static com.noodlesandwich.workshops.functional.testutils.Predicates.equalTo;
@@ -23,7 +25,11 @@ public final class FunctionalListMatcher<T> {
     }
 
     public static <T> Matcher<? super FunctionalList<T>> aListContaining(final T... items) {
-        return new ListMatcher<T>(items);
+        return new ListMatcher<T>(FunctionalList.of(items).map(FunctionalListMatcher.<T>toEqualityMatcher()));
+    }
+
+    public static <T> Matcher<? super FunctionalList<T>> aListContaining(final Matcher<? super T>... items) {
+        return new ListMatcher<T>(FunctionalList.of(items));
     }
 
     public static <T> Matcher<? super FunctionalList<T>> anUnorderedListContaining(final T... items) {
@@ -44,31 +50,31 @@ public final class FunctionalListMatcher<T> {
     }
 
     private static final class ListMatcher<T> extends TypeSafeDiagnosingMatcher<FunctionalList<T>> {
-        private final T[] expected;
+        private final FunctionalList<Matcher<? super T>> expected;
 
-        public ListMatcher(final T[] items) {
+        public ListMatcher(final FunctionalList<Matcher<? super T>> items) {
             this.expected = items;
         }
 
         @Override
         public void describeTo(final Description description) {
-            description.appendText("a list containing ").appendValueList("[", ", ", "]", expected);
+            description.appendText("a list containing ").appendList("[", ", ", "]", toCollection(expected));
         }
 
         @Override
         protected boolean matchesSafely(final FunctionalList<T> actual, final Description mismatchDescription) {
-            mismatchDescription.appendText("was a list containing ").appendValueList("[", ", ", "]", toIterable(actual));
-            return listEquals(FunctionalList.of(expected), actual);
+            mismatchDescription.appendText("was a list containing ").appendValueList("[", ", ", "]", toCollection(actual));
+            return listMatches(expected, actual);
         }
 
-        private boolean listEquals(final FunctionalList<T> one, final FunctionalList<T> two) {
-            return one.isEmpty() && two.isEmpty()
+        private static <T> boolean listMatches(final FunctionalList<Matcher<? super T>> expected, final FunctionalList<T> actual) {
+            return expected.isEmpty() && actual.isEmpty()
                        ? true
-                       : one.isEmpty() || two.isEmpty()
+                       : expected.isEmpty() || actual.isEmpty()
                              ? false
-                             : !one.head().equals(two.head())
+                             : !expected.head().matches(actual.head())
                                    ? false
-                                   : listEquals(one.tail(), two.tail());
+                                   : listMatches(expected.tail(), actual.tail());
         }
     }
 
@@ -87,7 +93,7 @@ public final class FunctionalListMatcher<T> {
 
         @Override
         protected boolean matchesSafely(final FunctionalList<T> actual, final Description mismatchDescription) {
-            mismatchDescription.appendText("was a list containing ").appendValueList("[", ", ", "]", toIterable(actual));
+            mismatchDescription.appendText("was a list containing ").appendValueList("[", ", ", "]", toCollection(actual));
             return unorderedListEquals(FunctionalList.of(expected), actual);
         }
 
@@ -102,7 +108,7 @@ public final class FunctionalListMatcher<T> {
         }
     }
 
-    private static <T> Iterable<T> toIterable(final FunctionalList<T> list) {
+    private static <T> Collection<T> toCollection(final FunctionalList<T> list) {
         return toCollection(list, new ArrayList<T>());
     }
 
@@ -115,5 +121,13 @@ public final class FunctionalListMatcher<T> {
     private static <T> Collection<T> add(final Collection<T> list, final T element) {
         list.add(element);
         return list;
+    }
+
+    private static <T> Function<T, Matcher<? super T>> toEqualityMatcher() {
+        return new Function<T, Matcher<? super T>>() {
+            @Override public Matcher<? super T> apply(final T input) {
+                return Matchers.equalTo(input);
+            }
+        };
     }
 }
