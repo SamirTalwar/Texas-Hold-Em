@@ -10,6 +10,8 @@ import org.hamcrest.TypeSafeDiagnosingMatcher;
 import static com.noodlesandwich.workshops.functional.Predicates.equalTo;
 
 public final class FunctionalListMatcher<T> {
+    private FunctionalListMatcher() { }
+
     public static <T> Matcher<? super FunctionalList<T>> empty() {
         return new EmptyMatcher<T>();
     }

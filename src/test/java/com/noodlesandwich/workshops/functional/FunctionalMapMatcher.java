@@ -11,7 +11,7 @@ import static com.noodlesandwich.workshops.functional.FunctionalListMatcher.anUn
 public final class FunctionalMapMatcher<K, V> extends TypeSafeDiagnosingMatcher<FunctionalMap<K, V>> {
     private final List<EntryMatcher<K, V>> entries;
 
-    public FunctionalMapMatcher(final EntryMatcher<K, V>[] entries) {
+    private FunctionalMapMatcher(final EntryMatcher<K, V>[] entries) {
         this.entries = Arrays.asList(entries);
     }
 
