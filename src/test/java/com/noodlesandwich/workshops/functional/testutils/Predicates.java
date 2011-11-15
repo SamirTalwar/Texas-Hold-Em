@@ -21,6 +21,14 @@ public final class Predicates {
         };
     }
 
+    public static Predicate<Integer> lessThan(final int n) {
+        return new Predicate<Integer>() {
+            @Override public boolean matches(final Integer input) {
+                return input < n;
+            }
+        };
+    }
+
     public static <T> Predicate<T> alwaysFalse(final Class<T> type) {
         return new Predicate<T>() {
             @Override public boolean matches(final T input) {

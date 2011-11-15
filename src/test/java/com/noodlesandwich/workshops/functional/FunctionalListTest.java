@@ -16,8 +16,19 @@ import static com.noodlesandwich.workshops.functional.testutils.Functions.toStri
 import static com.noodlesandwich.workshops.functional.testutils.Predicates.alwaysFalse;
 import static com.noodlesandwich.workshops.functional.testutils.Predicates.equalTo;
 import static com.noodlesandwich.workshops.functional.testutils.Predicates.even;
+import static com.noodlesandwich.workshops.functional.testutils.Predicates.lessThan;
 
 public final class FunctionalListTest {
+    @Test public void
+    is_equal_to_another_list_with_the_same_elements() {
+        assertThat(FunctionalList.of(7, 3, 2, 4).isEqualTo(FunctionalList.of(7, 3, 2, 4)), is(true));
+    }
+
+    @Test public void
+    is_not_equal_to_another_list_with_different_elements() {
+        assertThat(FunctionalList.of(7, 3, 4, 4).isEqualTo(FunctionalList.of(7, 3, 2, 4)), is(false));
+    }
+
     @Test public void
     maps_an_empty_list_to_an_empty_list() {
         assertThat(nil().map(toStringFunction()), is(empty(String.class)));
@@ -49,6 +60,26 @@ public final class FunctionalListTest {
     }
 
     @Test public void
+    takes_the_first_N_items() {
+        assertThat(FunctionalList.of(2, 7, 4, 8, 1, 2).take(3), is(aListContaining(2, 7, 4)));
+    }
+
+    @Test public void
+    taking_more_than_the_number_of_items_in_the_list_returns_the_entire_list() {
+        assertThat(FunctionalList.of(2, 7, 4, 8, 1, 2).take(7), is(aListContaining(2, 7, 4, 8, 1, 2)));
+    }
+
+    @Test public void
+    drops_items_from_a_list_until_the_condition_is_met() {
+        assertThat(FunctionalList.of(6, 4, 3, 7, 4, 2, 1).dropWhile(even()), is(aListContaining(3, 7, 4, 2, 1)));
+    }
+
+    @Test public void
+    drops_all_elements_if_the_condition_is_not_met() {
+        assertThat(FunctionalList.of(6, 4, 8, 2).dropWhile(even()), is(empty(Integer.class)));
+    }
+
+    @Test public void
     removes_an_element_from_a_list() {
         assertThat(FunctionalList.of(5, 4, 3).remove(equalTo(4)), is(aListContaining(5, 3)));
     }
@@ -61,6 +92,16 @@ public final class FunctionalListTest {
     @Test public void
     returns_the_same_list_if_no_element_was_found() {
         assertThat(FunctionalList.of(5, 4, 3, 2).remove(alwaysFalse(Integer.class)), is(aListContaining(5, 4, 3, 2)));
+    }
+
+    @Test public void
+    determines_that_all_elements_of_the_list_match_the_predicate() {
+        assertThat(FunctionalList.of(7, 4, 2, 6).all(lessThan(10)), is(true));
+    }
+
+    @Test public void
+    determines_that_not_all_elements_of_the_list_match_the_predicate() {
+        assertThat(FunctionalList.of(7, 4, 12, 6).all(lessThan(10)), is(false));
     }
 
     @SuppressWarnings("unchecked")

@@ -49,6 +49,20 @@ public abstract class FunctionalList<T> {
                          : tail().contains(predicate);
     }
 
+    public FunctionalList<T> take(final int n) {
+        return isEmpty() || n == 0
+                   ? FunctionalList.<T>nil()
+                   : cons(head(), tail().take(n - 1));
+    }
+
+    public FunctionalList<T> dropWhile(final Predicate<T> predicate) {
+        return isEmpty()
+                   ? FunctionalList.<T>nil()
+                   : !predicate.matches(head())
+                         ? this
+                         : tail().dropWhile(predicate);
+    }
+
     public FunctionalList<T> remove(final Predicate<T> predicate) {
         return isEmpty()
                    ? FunctionalList.<T>nil()
@@ -57,8 +71,20 @@ public abstract class FunctionalList<T> {
                          : cons(head(), tail().remove(predicate));
     }
 
+    public boolean all(final Predicate<T> predicate) {
+        return isEmpty()
+                   ? true
+                   : predicate.matches(head()) && tail().all(predicate);
+    }
+
     public <K> FunctionalMap<K, T> groupBy(final Function<T, K> grouping) {
         return groupBy(grouping, new FunctionalMap<K, T>());
+    }
+
+    private <K> FunctionalMap<K, T> groupBy(final Function<T, K> grouping, final FunctionalMap<K, T> map) {
+        return isEmpty()
+                   ? map
+                   : tail().groupBy(grouping, map.with(grouping.apply(head()), head()));
     }
 
     public FunctionalList<FunctionalList<T>> subListsOfSize(final int size) {
@@ -73,12 +99,6 @@ public abstract class FunctionalList<T> {
                    : cons(head(), tail().subListOfSize(size - 1));
     }
 
-    private <K> FunctionalMap<K, T> groupBy(final Function<T, K> grouping, final FunctionalMap<K, T> map) {
-        return isEmpty()
-                   ? map
-                   : tail().groupBy(grouping, map.with(grouping.apply(head()), head()));
-    }
-
     public int size() {
         return size(0);
     }
@@ -87,6 +107,16 @@ public abstract class FunctionalList<T> {
         return isEmpty()
                   ? currentSize
                   : tail().size(currentSize + 1);
+    }
+
+    public boolean isEqualTo(final FunctionalList<T> other) {
+        return this.isEmpty() && other.isEmpty()
+                ? true
+                : this.isEmpty() || other.isEmpty()
+                      ? false
+                      : !this.head().equals(other.head())
+                            ? false
+                            : tail().isEqualTo(other.tail());
     }
 
     public static final class Nil<T> extends FunctionalList<T> {

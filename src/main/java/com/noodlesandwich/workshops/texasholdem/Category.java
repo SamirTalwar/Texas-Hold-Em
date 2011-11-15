@@ -8,6 +8,16 @@ import com.noodlesandwich.workshops.texasholdem.Card.Rank;
 import com.noodlesandwich.workshops.texasholdem.Card.Suit;
 
 public enum Category {
+    StraightFlush("Straight Flush", new Predicate<FunctionalList<Card>>() {
+        @Override public boolean matches(final FunctionalList<Card> cards) {
+            return cards.subListsOfSize(5).contains(new Predicate<FunctionalList<Card>>() {
+                @Override public boolean matches(final FunctionalList<Card> groupedCards) {
+                    return areConsecutive(groupedCards.map(rank()), Card.RANKS) && areSame(groupedCards.map(suit()));
+                }
+            });
+        }
+    }),
+
     FourOfAKind("Four of a Kind", new Predicate<FunctionalList<Card>>() {
         @Override public boolean matches(final FunctionalList<Card> cards) {
             return cards.groupBy(rank()).containsValue(size(4));
@@ -29,10 +39,10 @@ public enum Category {
 
     Straight("Straight", new Predicate<FunctionalList<Card>>() {
         @Override public boolean matches(final FunctionalList<Card> cards) {
-            final FunctionalMap<Rank, Card> groupedCards = cards.groupBy(rank());
+            final FunctionalMap<Rank, Card> cardsByRank = cards.groupBy(rank());
             return Card.RANKS.subListsOfSize(5).contains(new Predicate<FunctionalList<Rank>>() {
                 @Override public boolean matches(final FunctionalList<Rank> ranks) {
-                    return groupedCards.containsKeys(ranks);
+                    return cardsByRank.containsKeys(ranks);
                 }
             });
         }
@@ -83,6 +93,14 @@ public enum Category {
         return FunctionalList.of(Category.values());
     }
 
+    private static <T> boolean areConsecutive(final FunctionalList<T> list, final FunctionalList<T> order) {
+        return list.isEqualTo(order.dropWhile(not(equalTo(list.head()))).take(list.size()));
+    }
+
+    private static <T> boolean areSame(final FunctionalList<T> list) {
+        return list.all(equalTo(list.head()));
+    }
+
     private static Function<Card, Rank> rank() {
         return new Function<Card, Rank>() {
             @Override public Rank apply(final Card card) {
@@ -103,6 +121,22 @@ public enum Category {
         return new Predicate<FunctionalList<Card>>() {
             @Override public boolean matches(final FunctionalList<Card> list) {
                 return list.size() >= n;
+            }
+        };
+    }
+
+    private static <T> Predicate<T> equalTo(final T value) {
+        return new Predicate<T>() {
+            @Override public boolean matches(final T input) {
+                return value.equals(input);
+            }
+        };
+    }
+
+    private static <T> Predicate<T> not(final Predicate<T> predicate) {
+        return new Predicate<T>() {
+            @Override public boolean matches(final T input) {
+                return !predicate.matches(input);
             }
         };
     }

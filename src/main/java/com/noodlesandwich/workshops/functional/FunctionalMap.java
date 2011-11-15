@@ -75,7 +75,7 @@ public final class FunctionalMap<K, V> {
                          : cons(entriesToCheck.head(), add(key, value, entriesToCheck.tail()));
     }
 
-    private final class Entry {
+    public final class Entry {
         private final K key;
         private final FunctionalList<V> values;
 
