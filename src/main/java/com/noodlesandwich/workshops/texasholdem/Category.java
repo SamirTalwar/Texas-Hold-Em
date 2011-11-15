@@ -2,7 +2,6 @@ package com.noodlesandwich.workshops.texasholdem;
 
 import com.noodlesandwich.workshops.functional.Function;
 import com.noodlesandwich.workshops.functional.FunctionalList;
-import com.noodlesandwich.workshops.functional.FunctionalMap;
 import com.noodlesandwich.workshops.functional.Predicate;
 import com.noodlesandwich.workshops.texasholdem.Card.Rank;
 import com.noodlesandwich.workshops.texasholdem.Card.Suit;
@@ -10,7 +9,7 @@ import com.noodlesandwich.workshops.texasholdem.Card.Suit;
 public enum Category {
     StraightFlush("Straight Flush", new Predicate<FunctionalList<Card>>() {
         @Override public boolean matches(final FunctionalList<Card> cards) {
-            return cards.subListsOfSize(5).contains(new Predicate<FunctionalList<Card>>() {
+            return cards.combinationsOfSize(5).contains(new Predicate<FunctionalList<Card>>() {
                 @Override public boolean matches(final FunctionalList<Card> groupedCards) {
                     return areConsecutive(groupedCards.map(rank()), Card.RANKS) && areSame(groupedCards.map(suit()));
                 }
@@ -39,10 +38,9 @@ public enum Category {
 
     Straight("Straight", new Predicate<FunctionalList<Card>>() {
         @Override public boolean matches(final FunctionalList<Card> cards) {
-            final FunctionalMap<Rank, Card> cardsByRank = cards.groupBy(rank());
-            return Card.RANKS.subListsOfSize(5).contains(new Predicate<FunctionalList<Rank>>() {
-                @Override public boolean matches(final FunctionalList<Rank> ranks) {
-                    return cardsByRank.containsKeys(ranks);
+            return cards.combinationsOfSize(5).contains(new Predicate<FunctionalList<Card>>() {
+                @Override public boolean matches(final FunctionalList<Card> groupedCards) {
+                    return areConsecutive(groupedCards.map(rank()), Card.RANKS);
                 }
             });
         }

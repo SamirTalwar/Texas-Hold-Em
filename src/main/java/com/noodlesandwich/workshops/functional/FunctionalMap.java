@@ -17,20 +17,6 @@ public final class FunctionalMap<K, V> {
         return new FunctionalMap<K, V>(add(key, value, entries));
     }
 
-    public boolean containsKeys(final FunctionalList<K> keys) {
-        return keys.isEmpty()
-                   ? true
-                   : containsKey(keys.head()) && containsKeys(keys.tail());
-    }
-
-    private boolean containsKey(final K key) {
-        return entries.contains(new Predicate<Entry>() {
-            @Override public boolean matches(final Entry entry) {
-                return key.equals(entry.key);
-            }
-        });
-    }
-
     public boolean containsValue(final Predicate<FunctionalList<V>> predicate) {
         return containsValue(predicate, entries);
     }

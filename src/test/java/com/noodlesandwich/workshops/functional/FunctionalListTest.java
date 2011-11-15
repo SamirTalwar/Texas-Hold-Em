@@ -1,6 +1,9 @@
 package com.noodlesandwich.workshops.functional;
 
+import org.hamcrest.Matcher;
 import org.junit.Test;
+
+import com.noodlesandwich.workshops.functional.testutils.FunctionalListMatcher;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -114,14 +117,32 @@ public final class FunctionalListTest {
 
     @SuppressWarnings("unchecked")
     @Test public void
-    partitions_a_list_into_sub_lists_of_a_given_size() {
-        assertThat(FunctionalList.of(6, 1, 7, 2, 8, 4, 3, 2, 6, 7, 8, 10).subListsOfSize(6),
-                   is(aListContaining(aListContaining(6, 1, 7, 2, 8, 4),
-                                      aListContaining(1, 7, 2, 8, 4, 3),
-                                      aListContaining(7, 2, 8, 4, 3, 2),
-                                      aListContaining(2, 8, 4, 3, 2, 6),
-                                      aListContaining(8, 4, 3, 2, 6, 7),
-                                      aListContaining(4, 3, 2, 6, 7, 8),
-                                      aListContaining(3, 2, 6, 7, 8, 10))));
+    generates_combinations_of_a_given_size() {
+        assertThat(FunctionalList.of(7, 3, 4, 6, 1).combinationsOfSize(3),
+                   is(FunctionalListMatcher.<FunctionalList<Integer>>aListContaining(
+                       ints(7, 3, 4),
+                       ints(7, 3, 6),
+                       ints(7, 3, 1),
+                       ints(7, 4, 6),
+                       ints(7, 4, 1),
+                       ints(7, 6, 1),
+                       ints(3, 4, 6),
+                       ints(3, 4, 1),
+                       ints(3, 6, 1),
+                       ints(4, 6, 1))));
+    }
+
+    private Matcher<? super FunctionalList<Integer>> ints(final Integer... values) {
+        return aListContaining(values);
+    }
+
+    @Test public void
+    returns_an_empty_list_if_the_combination_size_is_greater_than_the_size_of_the_list() {
+        assertThat(FunctionalList.of(6, 5, 4).combinationsOfSize(4), is(FunctionalListMatcher.<FunctionalList<Integer>>empty()));
+    }
+
+    @Test public void
+    concatenates_one_list_to_another() {
+        assertThat(FunctionalList.of(5, 3, 1).concat(FunctionalList.of(6, 4, 2)), is(aListContaining(5, 3, 1, 6, 4, 2)));
     }
 }

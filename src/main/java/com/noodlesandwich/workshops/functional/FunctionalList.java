@@ -87,16 +87,27 @@ public abstract class FunctionalList<T> {
                    : tail().groupBy(grouping, map.with(grouping.apply(head()), head()));
     }
 
-    public FunctionalList<FunctionalList<T>> subListsOfSize(final int size) {
-        return size() < size
-                   ? FunctionalList.<FunctionalList<T>>nil()
-                   : cons(subListOfSize(size), tail().subListsOfSize(size));
+    public FunctionalList<FunctionalList<T>> combinationsOfSize(final int size) {
+        return size == 0
+                   ? cons(FunctionalList.<T>nil(), FunctionalList.<FunctionalList<T>>nil())
+                   : isEmpty()
+                         ? FunctionalList.<FunctionalList<T>>nil()
+                         : tail().combinationsOfSize(size - 1).map(prefixWith(head())).concat(tail().combinationsOfSize(size));
     }
 
-    private FunctionalList<T> subListOfSize(final int size) {
-        return size == 0
-                   ? FunctionalList.<T>nil()
-                   : cons(head(), tail().subListOfSize(size - 1));
+    private Function<FunctionalList<T>, FunctionalList<T>> prefixWith(final T head) {
+        return new Function<FunctionalList<T>, FunctionalList<T>>() {
+            @Override
+            public FunctionalList<T> apply(final FunctionalList<T> tail) {
+                return cons(head, tail);
+            }
+        };
+    }
+
+    public FunctionalList<T> concat(final FunctionalList<T> next) {
+        return isEmpty()
+                   ? next
+                   : cons(head(), tail().concat(next));
     }
 
     public int size() {
@@ -134,6 +145,11 @@ public abstract class FunctionalList<T> {
         public FunctionalList<T> tail() {
             throw new NoSuchElementException();
         }
+
+        @Override
+        public String toString() {
+            return "[]";
+        }
     }
 
     public static final class Cons<T> extends FunctionalList<T> {
@@ -158,6 +174,11 @@ public abstract class FunctionalList<T> {
         @Override
         public FunctionalList<T> tail() {
             return tail;
+        }
+
+        @Override
+        public String toString() {
+            return head + " : " + tail;
         }
     }
 }
