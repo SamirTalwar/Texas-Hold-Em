@@ -92,7 +92,7 @@ public final class Card {
         }
     }
 
-    public static final FunctionalList<Rank> RANKS = FunctionalList.of(Rank.values());
+    public static final FunctionalList<Rank> RANKS = FunctionalList.of(Rank.values()).tail();
 
-    public static final FunctionalList<Suit> SUITS = FunctionalList.of(Suit.values());
+    public static final FunctionalList<Suit> SUITS = FunctionalList.of(Suit.values()).tail();
 }
