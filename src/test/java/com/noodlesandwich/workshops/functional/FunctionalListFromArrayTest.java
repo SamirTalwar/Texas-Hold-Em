@@ -5,6 +5,7 @@ import org.junit.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
+import static com.noodlesandwich.workshops.functional.testutils.FunctionalListMatcher.aListContaining;
 import static com.noodlesandwich.workshops.functional.testutils.FunctionalListMatcher.empty;
 
 public final class FunctionalListFromArrayTest {
@@ -19,10 +20,6 @@ public final class FunctionalListFromArrayTest {
         final Object two = new Object();
         final Object three = new Object();
 
-        final FunctionalList<Object> list = FunctionalList.of(one, two, three);
-        assertThat(list.head(), is(one));
-        assertThat(list.tail().head(), is(two));
-        assertThat(list.tail().tail().head(), is(three));
-        assertThat(list.tail().tail().tail(), is(empty()));
+        assertThat(FunctionalList.of(one, two, three), is(aListContaining(one, two, three)));
     }
 }
